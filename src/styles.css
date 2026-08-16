@@ -58,7 +58,7 @@ textarea:focus-visible {
 .shell {
   width: min(760px, calc(100% - 32px));
   margin: 0 auto;
-  padding: 56px 0 72px;
+  padding: 56px 0 calc(var(--composer-height, 68px) + 48px);
 }
 header {
   display: flex;
@@ -76,7 +76,24 @@ h1 {
   text-align: right;
 }
 .composer {
-  margin: 30px 0 20px;
+  position: fixed;
+  z-index: 10;
+  left: 50%;
+  bottom: max(12px, env(safe-area-inset-bottom));
+  width: min(760px, calc(100% - 32px));
+  margin: 0;
+  padding: 10px;
+  transform: translateX(-50%);
+  border: 1px solid var(--ink);
+  border-radius: 6px;
+  background: var(--paper);
+  box-shadow: 0 -8px 24px rgb(39 39 39 / 12%);
+}
+.composer-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 8px;
+  align-items: center;
 }
 .composer input,
 .composer textarea,
@@ -95,15 +112,16 @@ h1 {
 .composer textarea {
   display: block;
   min-height: 70px;
-  margin-top: 8px;
   resize: vertical;
 }
-.composer-actions {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  align-items: center;
-  margin-top: 10px;
+.composer-description {
+  margin-top: 8px;
+}
+.composer-note-toggle {
+  padding: 10px 12px;
+  border-color: var(--line);
+  color: var(--muted);
+  white-space: nowrap;
 }
 .hint {
   color: var(--muted);
@@ -115,6 +133,10 @@ h1 {
   color: var(--paper);
   transition: transform 0.1s ease;
   
+}
+.composer .primary {
+  padding: 10px 14px;
+  white-space: nowrap;
 }
 .primary:hover {
   background: var(--button-hover);
@@ -179,6 +201,7 @@ h1 {
 .task {
   border-bottom: 1px solid var(--line);
   padding: 14px 0;
+  scroll-margin-bottom: calc(var(--composer-height, 68px) + 24px);
 }
 .task-main {
   display: grid;
@@ -352,6 +375,16 @@ h1 {
   .shell {
     width: min(100% - 24px, 760px);
     padding-top: 30px;
+  }
+  .composer {
+    bottom: max(8px, env(safe-area-inset-bottom));
+    width: min(100% - 24px, 760px);
+  }
+  .composer:focus-within {
+    position: static;
+    width: 100%;
+    margin-top: 24px;
+    transform: none;
   }
   header {
     align-items: flex-start;

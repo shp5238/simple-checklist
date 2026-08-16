@@ -17,6 +17,7 @@ still need to be finalized before treating it as a production release.
 ## Features
 
 - Create parent tasks with an optional multiline description.
+- Add tasks from a compact composer docked to the bottom of the viewport.
 - Add subtasks recursively, up to the validated hierarchy limit.
 - Edit task titles and descriptions inline.
 - Complete a task and its full subtree together.
@@ -43,6 +44,7 @@ still need to be finalized before treating it as a production release.
   to the next or previous task title.
 - Press `Escape` to cancel a title or description edit.
 - Press `Ctrl+Enter` or `Command+Enter` to save a description.
+- Press `Alt+N` or `Option+N` to focus the new-task field.
 - Use the labeled up and down buttons when drag-and-drop is unavailable or
   inappropriate.
 
@@ -128,11 +130,11 @@ Run the complete suite:
 npm test
 ```
 
-The current suite contains 36 end-to-end scenarios, executed in Chromium,
-Firefox, and WebKit for 108 browser-specific test runs. Coverage includes task
+The current suite contains 42 end-to-end scenarios, executed in Chromium,
+Firefox, and WebKit for 126 browser-specific test runs. Coverage includes task
 creation, nested subtasks, editing, deletion, completion propagation, filtering,
 search, persistence, JSON import/export, safe text rendering, keyboard flows,
-collapsing, and hierarchy-aware drag-and-drop.
+collapsing, hierarchy-aware drag-and-drop, and responsive composer behavior.
 
 To inspect the most recent HTML report:
 
@@ -153,15 +155,14 @@ the `src/` application directory before those workflows can be considered ready.
 
 1. Correct and verify the validation and GitHub Pages workflow paths.
 2. Add undo support for deletion and drag/reorder operations.
-3. Improve long-list entry with a compact composer that remains conveniently
-   available without obscuring task content.
-4. Add drag autoscrolling and evaluate touch-friendly hierarchy controls.
-5. Preserve a recoverable copy when stored data is corrupt instead of only
+3. Add drag autoscrolling and evaluate touch-friendly hierarchy controls.
+4. Preserve a recoverable copy when stored data is corrupt instead of only
    falling back safely.
-6. Add optional completed-task archiving without cluttering the active list.
-7. Add restrained completion animation with `prefers-reduced-motion` support.
-8. Expand testing to mobile viewports and automated accessibility checks.
-9. Update `package.json` and add a standalone license file matching Apache 2.0.
+5. Add optional completed-task archiving without cluttering the active list.
+6. Add restrained completion animation with `prefers-reduced-motion` support.
+7. Expand automated accessibility checks beyond the existing mobile composer
+   coverage.
+8. Add a standalone license file matching the Apache 2.0 package metadata.
 
 Shared-link collaboration remains a possible version 2 feature. It would require
 hosting, shared storage, authentication or edit-token design, and conflict

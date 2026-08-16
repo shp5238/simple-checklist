@@ -2,7 +2,10 @@ import { test, expect } from '@playwright/test';
 
 async function addTask(page, title, description = '') {
   await page.getByLabel('New task').fill(title);
-  if (description) await page.getByLabel('Optional description').fill(description);
+  if (description) {
+    await page.getByRole('button', { name: 'Add note' }).click();
+    await page.getByLabel('Optional description').fill(description);
+  }
   await page.getByRole('button', { name: 'Add task' }).click();
 }
 

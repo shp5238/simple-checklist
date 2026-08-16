@@ -15,6 +15,8 @@
     form: document.getElementById('task-form'),
     title: document.getElementById('task-title'),
     description: document.getElementById('task-description'),
+    descriptionToggle: document.getElementById('composer-description-toggle'),
+    descriptionPanel: document.getElementById('composer-description'),
     addTask: document.querySelector('#task-form button[type="submit"]'),
     list: document.getElementById('task-list'),
     search: document.getElementById('search'),
@@ -30,6 +32,19 @@
   const id = () => crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
   const cleanText = (value, max) => typeof value === 'string' ? value.slice(0, max) : '';
   const setStatus = message => { elements.status.textContent = message; };
+
+  function setComposerDescriptionExpanded(expanded, focusDescription = false) {
+    elements.descriptionPanel.hidden = !expanded;
+    elements.descriptionToggle.setAttribute('aria-expanded', String(expanded));
+    elements.descriptionToggle.textContent = expanded
+      ? 'Hide note'
+      : elements.description.value ? 'Edit note' : 'Add note';
+    if (focusDescription) elements.description.focus();
+  }
+
+  function updateComposerHeight() {
+    document.documentElement.style.setProperty('--composer-height', `${elements.form.offsetHeight}px`);
+  }
 
   function setSubtreeCompletion(task, completed) {
     task.completed = completed;
@@ -417,7 +432,7 @@
   function render() {
     elements.list.replaceChildren();
     const visible = state.tasks.filter(shouldShow);
-    if (!visible.length) { const empty = document.createElement('li'); empty.className = 'empty'; empty.textContent = state.tasks.length ? 'No tasks in this view.' : 'Your list is clear. Add the first task above.'; elements.list.append(empty); }
+    if (!visible.length) { const empty = document.createElement('li'); empty.className = 'empty'; empty.textContent = state.tasks.length ? 'No tasks in this view.' : 'Your list is clear. Add the first task below.'; elements.list.append(empty); }
     else visible.forEach(task => elements.list.append(renderTask(task, 0, state.tasks, state.tasks.indexOf(task))));
     elements.views.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.view === state.view)));
     elements.clearSearch.hidden = !state.query;
@@ -426,8 +441,18 @@
 
   elements.form.addEventListener('submit', event => {
     event.preventDefault(); const title = elements.title.value.trim(); if (!title) return;
-    state.tasks.push({ id: id(), title: cleanText(title, MAX_TITLE), description: cleanText(elements.description.value, MAX_DESCRIPTION), completed: false, collapsed: false, children: [] });
-    elements.form.reset(); save(); render(); elements.title.focus();
+    const task = { id: id(), title: cleanText(title, MAX_TITLE), description: cleanText(elements.description.value, MAX_DESCRIPTION), completed: false, collapsed: false, children: [] };
+    state.tasks.push(task);
+    let adjustedView = false;
+    if (state.view === 'completed') { state.view = 'active'; adjustedView = true; }
+    if (state.query && !matchesQuery(task)) { state.query = ''; elements.search.value = ''; adjustedView = true; }
+    elements.form.reset();
+    setComposerDescriptionExpanded(false);
+    save(); render();
+    const newItem = Array.from(elements.list.querySelectorAll('.task')).find(item => item.dataset.taskId === task.id);
+    if (newItem) newItem.scrollIntoView({ block: 'nearest' });
+    elements.title.focus({ preventScroll: true });
+    setStatus(adjustedView ? 'Task added. The view was adjusted to show it.' : 'Task added.');
   });
   elements.addTask.addEventListener('keydown', event => {
     if (event.key !== 'Tab' || event.shiftKey) return;
@@ -441,6 +466,18 @@
     if (!firstParent) return;
     event.preventDefault();
     openTitleEditor(firstParent.id);
+  });
+  elements.descriptionToggle.addEventListener('click', () => {
+    const expanded = elements.descriptionToggle.getAttribute('aria-expanded') !== 'true';
+    setComposerDescriptionExpanded(expanded, expanded);
+  });
+  elements.description.addEventListener('input', () => {
+    if (elements.descriptionPanel.hidden) setComposerDescriptionExpanded(true);
+  });
+  document.addEventListener('keydown', event => {
+    if (!event.altKey || event.ctrlKey || event.metaKey || event.key.toLocaleLowerCase() !== 'n') return;
+    event.preventDefault();
+    elements.title.focus();
   });
   elements.views.forEach(button => button.addEventListener('click', () => { state.view = button.dataset.view; render(); }));
   elements.search.addEventListener('input', () => { state.query = elements.search.value; render(); });
@@ -457,5 +494,7 @@
     catch (_) { setStatus('That file is not a valid Plain List backup.'); }
   });
   elements.clear.addEventListener('click', () => { if (!state.tasks.length || !confirm('Clear every task from this browser? This cannot be undone.')) return; state.tasks = []; focusRequest = { type: 'new-task' }; save(); render(); setStatus('All tasks cleared.'); });
-  load(); render();
+  if ('ResizeObserver' in window) new ResizeObserver(updateComposerHeight).observe(elements.form);
+  else window.addEventListener('resize', updateComposerHeight);
+  load(); render(); updateComposerHeight();
 })();
