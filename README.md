@@ -162,7 +162,6 @@ the `src/` application directory before those workflows can be considered ready.
 6. Add restrained completion animation with `prefers-reduced-motion` support.
 7. Expand automated accessibility checks beyond the existing mobile composer
    coverage.
-8. Add a standalone license file matching the Apache 2.0 package metadata.
 
 Shared-link collaboration remains a possible version 2 feature. It would require
 hosting, shared storage, authentication or edit-token design, and conflict
@@ -170,5 +169,5 @@ handling; none of those concerns are part of the local-only version 1 scope.
 
 ## License
 
-This project is licensed under the
-[Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
+This project is licensed under the Apache License 2.0. See
+[LICENSE](LICENSE) for the complete license text.
