@@ -3,12 +3,13 @@ name: Check checklist app
 on:
   push:
     paths:
-      - "simple-checklist/**"
+      - "src/**"
       - ".github/workflows/check.yml"
   pull_request:
     paths:
-      - "simple-checklist/**"
+      - "src/**"
       - ".github/workflows/check.yml"
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -22,8 +23,11 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Confirm the app exists
-        run: test -f simple-checklist/index.html
+        run: test -f src/index.html -a -f src/script.js -a -f src/styles.css
 
       - name: Guard against unsafe task rendering
         run: |
-          ! grep -nE 'innerHTML|insertAdjacentHTML|document\\.write' simple-checklist/index.html
+          if grep -RInE 'innerHTML|insertAdjacentHTML|document\.write' src; then
+            echo "Unsafe DOM rendering API found."
+            exit 1
+          fi

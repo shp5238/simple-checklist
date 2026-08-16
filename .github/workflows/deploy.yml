@@ -5,22 +5,33 @@ on:
     branches:
       - main
     paths:
-      - "simple-checklist/**"
+      - "src/**"
+      - "tests/**"
+      - "package.json"
+      - "package-lock.json"
+      - "playwright.config.js"
+      - ".github/workflows/playwright.yml"
       - ".github/workflows/deploy.yml"
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: "pages"
   cancel-in-progress: true
 
 jobs:
+  test:
+    uses: ./.github/workflows/playwright.yml
+
   deploy:
+    needs: test
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -35,7 +46,7 @@ jobs:
       - name: Upload the checklist app
         uses: actions/upload-pages-artifact@v4
         with:
-          path: simple-checklist
+          path: src
 
       - name: Deploy
         id: deployment
