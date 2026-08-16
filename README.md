@@ -1,105 +1,138 @@
-# TO-DO List
+# Simple Checklist
 
-TO-DO List is a lightweight, local-first/private checklist for organizing parent tasks,
-descriptions, and nested subtasks. It runs entirely in the browser and keeps task
-data on the current device—no account, backend, build step, or runtime dependency
-is required.
+Simple Checklist is a lightweight, local-first task manager built with HTML,
+CSS, and vanilla JavaScript. It supports parent tasks, descriptions, deeply
+nested subtasks, keyboard editing, and hierarchy-aware reordering without an
+account, backend, framework, or runtime dependency.
+
+Task data stays in the current browser unless the user explicitly exports a
+JSON backup.
 
 ## Project status
 
-Version 1 is functional and under active development. Core task management,
-local persistence, JSON backups, keyboard interaction, hierarchy-aware
-drag-and-drop, and cross-browser end-to-end tests are implemented.
+Version 1 is functional and its core feature set is complete. The remaining
+Version 1 work focuses on recovery, security hardening, touch controls,
+accessibility review, and deployment verification.
 
-The app is suitable for local use. Deployment automation and release metadata
-still need to be finalized before treating it as a production release.
+### Core task management
 
-## Features
+- [x] Create parent tasks with text-only titles.
+- [x] Add an optional multiline description to a task.
+- [x] Add recursively nested subtasks, up to 12 levels deep.
+- [x] Edit task titles and descriptions inline.
+- [x] Delete a task and its descendants after confirmation.
+- [x] Clear the complete list after confirmation.
+- [x] Mark a task and its entire subtree complete together.
+- [x] Reopen completed ancestors when one of their subtasks is reopened.
+- [x] Collapse and expand task descriptions and subtasks.
+- [x] Keep due dates, priority levels, and progress indicators out of Version 1.
 
-- Create parent tasks with an optional multiline description.
-- Add tasks from a compact composer docked to the bottom of the viewport.
-- Add subtasks recursively, up to the validated hierarchy limit.
-- Edit task titles and descriptions inline.
-- Complete a task and its full subtree together.
-- Reopen a subtask and automatically reopen its completed ancestors.
-- Collapse or expand task descriptions and nested subtasks.
-- Filter the list using All, Active, and Completed views.
-- Search task titles, descriptions, and nested subtasks.
-- Reorder sibling tasks with accessible move buttons.
-- Drag tasks before, after, or inside another task to change their hierarchy.
-- Move an entire nested subtree without losing its descendants.
-- Promote any subtask back to the top level by dragging it to a root position.
-- Automatically save changes to browser `localStorage`.
-- Export and import the complete task tree as a JSON backup.
+### Finding and organizing tasks
 
-## Keyboard and accessibility support
+- [x] Switch between All, Active, and Completed views.
+- [x] Search titles, descriptions, and nested subtasks.
+- [x] Reorder sibling tasks with labeled move buttons.
+- [x] Drag tasks before, after, or inside another task.
+- [x] Move a task together with its complete nested subtree.
+- [x] Move subtasks into a different parent.
+- [x] Promote a subtask to a top-level parent by dragging it to a root position.
+- [x] Reject drops into the dragged task's own descendants.
+- [x] Reject drops that would exceed the supported nesting depth.
 
-- Semantic task and subtask lists.
-- Visible focus styles and descriptive labels for interactive controls.
-- Live status announcements for operations such as moving and deleting tasks.
-- Click a task title to edit it inline.
-- Press `Tab` or `Shift+Tab` while editing a title to save it and open the next
-  or previous visible task for editing.
-- Press `Enter` or `Shift+Enter` while editing a title to save it and move focus
-  to the next or previous task title.
-- Press `Escape` to cancel a title or description edit.
-- Press `Ctrl+Enter` or `Command+Enter` to save a description.
-- Press `Alt+N` or `Option+N` to focus the new-task field.
-- Use the labeled up and down buttons when drag-and-drop is unavailable or
-  inappropriate.
+### Task composer
 
-The drag handle is intentionally pointer-only and excluded from the Tab order;
-the move buttons provide the keyboard-accessible equivalent.
+- [x] Keep a compact task composer at the bottom of the viewport.
+- [x] Reveal the optional description field only when requested.
+- [x] Keep focus in the composer for quick repeated entry.
+- [x] Scroll the newly created task into view.
+- [x] Adjust a restrictive view or search so a new task remains visible.
+- [x] Move the composer into the document flow while editing on small screens.
 
-## Drag-and-drop behavior
+### Persistence and backups
 
-The drop position determines the task's new hierarchy:
+- [x] Save every change automatically to browser `localStorage`.
+- [x] Restore the task tree after refreshing or reopening the page.
+- [x] Export the complete task tree as a readable JSON backup.
+- [x] Import a JSON backup after confirmation.
+- [x] Reject malformed, oversized, or structurally invalid imports.
+- [x] Limit stored data to 1,000 tasks, 12 nesting levels, 240 characters per
+  title, and 4,000 characters per description.
 
-- Drop near the top of a task to insert before it at the same level.
-- Drop near the bottom to insert after it at the same level.
-- Drop near the middle to make it a child of that task.
+### Keyboard and accessibility support
 
-The app prevents a task from being moved into itself or one of its descendants
-and rejects moves that would exceed the maximum supported nesting depth.
+- [x] Use semantic task and subtask lists.
+- [x] Provide visible focus states and descriptive accessible button labels.
+- [x] Announce important operations through an ARIA live status region.
+- [x] Click or focus a task title to edit it.
+- [x] Use `Tab` and `Shift+Tab` while editing to move through visible parent
+  tasks and subtasks in document order.
+- [x] Use `Enter` and `Shift+Enter` while editing to save and move focus to the
+  next or previous task title.
+- [x] Use `Escape` to cancel a title or description edit.
+- [x] Use `Ctrl+Enter` or `Command+Enter` to save a description.
+- [x] Use `Alt+N` or `Option+N` to return to the new-task field.
+- [x] Keep the pointer-only drag handle out of the keyboard tab order while
+  retaining labeled move buttons as its keyboard alternative.
 
-## Privacy and security
+### Security and privacy
 
-Task content is rendered with native DOM elements and `textContent`; the app does
-not inject task text with `innerHTML`. Imported and stored data is validated and
-bounded by task count, nesting depth, title length, and description length before
-it is rendered.
+- [x] Render user-controlled text with native DOM nodes and `textContent`.
+- [x] Avoid `innerHTML`, `insertAdjacentHTML`, and `document.write` in the app.
+- [x] Validate and bound imported and persisted task data before rendering it.
+- [x] Limit imported backup files to 2 MB.
+- [x] Use generated UUIDs for tasks created in the app.
+- [x] Run a CI guard that rejects unsafe HTML-rendering APIs in `src/`.
+- [x] Use no third-party runtime scripts or external application dependencies.
 
-Important limitations:
+## Remaining Version 1 work
 
-- `localStorage` is persistent, but it is not encrypted storage.
+- [ ] Add a brief undo notification after deleting a task.
+- [ ] Add keyboard and touch-friendly indent and outdent controls.
+- [ ] Perform a manual mobile usability and accessibility pass.
+- [ ] Add drag autoscrolling for long lists.
+- [ ] Preserve unreadable `localStorage` data under a recovery key before
+  starting with an empty list.
+- [ ] Add a restrictive Content Security Policy.
+- [ ] Replace or reject task IDs supplied by imported backups so imported data
+  cannot create duplicate or attacker-controlled identifiers.
+- [ ] Add automated accessibility checks to complement the existing interaction
+  tests.
+- [ ] Upgrade GitHub Actions that still emit Node.js 20 deprecation warnings.
+- [ ] Enable GitHub Pages in the repository settings and verify the production
+  deployment from `main`.
+
+## Privacy limitations
+
+This is a local-first application, not encrypted storage:
+
 - Anyone with access to the same browser profile and site origin may be able to
-  view the list.
-- JSON exports contain task content as readable plain text and should be stored accordingly.
-- Clearing browser data, using a private browsing session, or changing origins
-  can remove or separate the saved list.
-- There is no account, cloud synchronization, link sharing, or remote collaboration in version 1.
+  read the list.
+- JSON exports contain task content as readable plain text.
+- Clearing browser data, using private browsing, or opening the app under a
+  different origin can remove or separate the saved list.
+- Version 1 has no account, cloud synchronization, shared link, or remote
+  collaboration support.
 
 Export a JSON backup for any list that would be difficult to recreate.
 
 ## Architecture
 
-The application is a static site built with:
+- `src/index.html` — semantic application structure
+- `src/styles.css` — black-and-white responsive presentation
+- `src/script.js` — task state, rendering, interaction, persistence, and backup
+  logic
+- `localStorage` — browser-local persistence
+- Playwright — development-only cross-browser end-to-end testing
 
-- HTML5 in `src/index.html`
-- CSS in `src/styles.css`
-- Vanilla JavaScript in `src/script.js`
-- Browser `localStorage` for persistence
-- Playwright as a development-only end-to-end testing dependency
-
-There is no application framework, bundler, server-side database, or runtime
-package dependency.
+The app has no framework, bundler, server-side database, or runtime package
+dependency.
 
 ## Run locally
 
 Requirements:
 
 - Python 3 for the local static server
-- Node.js and npm only when installing or running tests
+- Node.js 20 or newer and npm for development and testing
 
 Install the development dependencies:
 
@@ -113,8 +146,17 @@ Start the app:
 npm start
 ```
 
-Then open [http://localhost:3000](http://localhost:3000). Stop the server with
+Open [http://localhost:3000](http://localhost:3000). Stop the server by pressing
 `Ctrl+C` in the terminal where it is running.
+
+To find an unknown local server on macOS:
+
+```bash
+lsof -nP -iTCP -sTCP:LISTEN
+```
+
+Stop a selected process with `kill <PID>`. Use `kill -9 <PID>` only if a normal
+stop does not work.
 
 ## Testing
 
@@ -130,13 +172,15 @@ Run the complete suite:
 npm test
 ```
 
-The current suite contains 42 end-to-end scenarios, executed in Chromium,
-Firefox, and WebKit for 126 browser-specific test runs. Coverage includes task
-creation, nested subtasks, editing, deletion, completion propagation, filtering,
-search, persistence, JSON import/export, safe text rendering, keyboard flows,
-collapsing, hierarchy-aware drag-and-drop, and responsive composer behavior.
+- [x] 42 end-to-end scenarios
+- [x] Chromium, Firefox, and WebKit projects
+- [x] 126 browser-specific test runs in the complete suite
+- [x] Coverage of creation, nesting, editing, deletion, completion propagation,
+  views, search, persistence, backups, safe rendering, keyboard flows,
+  collapsing, drag-and-drop, and responsive composer behavior
+- [x] Playwright HTML report and retry traces in CI
 
-To inspect the most recent HTML report:
+Inspect the most recent local HTML report with:
 
 ```bash
 npx playwright show-report
@@ -144,30 +188,28 @@ npx playwright show-report
 
 ## Continuous integration and deployment
 
-A Playwright GitHub Actions workflow is present and runs the browser suite for
-pushes and pull requests targeting `main` or `master`.
+- [x] Validate the expected `src/` application files on relevant pushes and pull
+  requests.
+- [x] Reject unsafe rendering APIs during validation.
+- [x] Run the complete Playwright suite for relevant pull requests.
+- [x] Require the Playwright job to pass before the Pages deployment job starts.
+- [x] Package `src/` as the GitHub Pages artifact on relevant pushes to `main`.
+- [ ] Complete deployment by selecting **GitHub Actions** under **Settings →
+  Pages → Build and deployment**.
 
-Additional validation and GitHub Pages workflows have been drafted, but their
-paths currently refer to an older repository layout. They must be updated to use
-the `src/` application directory before those workflows can be considered ready.
+## Possible Version 2 features
 
-## Next steps
+- [ ] Shared lists that anyone with an edit link can update.
+- [ ] Hosted storage and cross-device synchronization.
+- [ ] Authentication or revocable edit tokens.
+- [ ] Conflict handling for simultaneous edits.
+- [ ] Optional completed-task archiving.
 
-1. Correct and verify the validation and GitHub Pages workflow paths.
-2. Add undo support for deletion and drag/reorder operations.
-3. Add drag autoscrolling and evaluate touch-friendly hierarchy controls.
-4. Preserve a recoverable copy when stored data is corrupt instead of only
-   falling back safely.
-5. Add optional completed-task archiving without cluttering the active list.
-6. Add restrained completion animation with `prefers-reduced-motion` support.
-7. Expand automated accessibility checks beyond the existing mobile composer
-   coverage.
-
-Shared-link collaboration remains a possible version 2 feature. It would require
-hosting, shared storage, authentication or edit-token design, and conflict
-handling; none of those concerns are part of the local-only version 1 scope.
+Shared-link editing requires hosting, shared storage, authorization, abuse
+controls, and conflict resolution. Those concerns are intentionally outside the
+local-only Version 1 scope.
 
 ## License
 
-This project is licensed under the Apache License 2.0. See
-[LICENSE](LICENSE) for the complete license text.
+Licensed under the Apache License 2.0. See [LICENSE](LICENSE) for the complete
+license text.
