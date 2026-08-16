@@ -1,8 +1,9 @@
 {
   "name": "simple-checklist",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "private": true,
+  "description": "A secure, local-first checklist with nested tasks and browser persistence.",
+  "type": "module",
   "scripts": {
     "start": "python3 -m http.server 3000 --directory src",
     "test": "playwright test"
@@ -11,10 +12,17 @@
     "type": "git",
     "url": "git+https://github.com/shp5238/simple-checklist.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "checklist",
+    "todo",
+    "local-first",
+    "vanilla-javascript"
+  ],
+  "author": "shp5238",
   "license": "Apache-2.0",
-  "type": "commonjs",
+  "engines": {
+    "node": ">=20"
+  },
   "bugs": {
     "url": "https://github.com/shp5238/simple-checklist/issues"
   },

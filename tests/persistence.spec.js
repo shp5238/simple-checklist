@@ -4,6 +4,7 @@ test('keeps tasks after a reload', async ({ page }) => {
   await page.goto('/');
 
   await page.getByLabel('New task').fill('Persistent task');
+  await page.getByRole('button', { name: 'Add note' }).click();
   await page.getByLabel('Optional description').fill('This should survive a reload.');
   await page.getByRole('button', { name: 'Add task' }).click();
 

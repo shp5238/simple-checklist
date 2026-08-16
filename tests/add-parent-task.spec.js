@@ -5,6 +5,7 @@ test('adds a parent task with a description', async ({ page }) => {
 
   // Act: fill out and submit the add-task form.
   await page.getByLabel('New task').fill('Buy groceries');
+  await page.getByRole('button', { name: 'Add note' }).click();
   await page.getByLabel('Optional description').fill('Milk\nBread');
   await page.getByRole('button', { name: 'Add task' }).click();
 
@@ -25,6 +26,6 @@ test('does not add a task with an empty title', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'Add task' }).click();
 
-  await expect(page.getByText('Your list is clear. Add the first task above.')).toBeVisible();
+  await expect(page.getByText('Your list is clear. Add the first task below.')).toBeVisible();
   await expect(page.locator('#task-list > li.task')).toHaveCount(0);
 });

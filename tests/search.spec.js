@@ -26,6 +26,7 @@ test('search shows matching tasks', async ({ page }) => {
 test('searches task descriptions and subtasks', async ({ page }) => {
   await page.goto('/');
   await page.getByLabel('New task').fill('Plan weekend');
+  await page.getByRole('button', { name: 'Add note' }).click();
   await page.getByLabel('Optional description').fill('Look for a museum exhibit');
   await page.getByRole('button', { name: 'Add task' }).click();
 

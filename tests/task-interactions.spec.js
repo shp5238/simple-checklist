@@ -2,7 +2,10 @@ import { test, expect } from '@playwright/test';
 
 async function addTask(page, title, description = '') {
   await page.getByLabel('New task').fill(title);
-  if (description) await page.getByLabel('Optional description').fill(description);
+  if (description) {
+    await page.getByRole('button', { name: 'Add note' }).click();
+    await page.getByLabel('Optional description').fill(description);
+  }
   await page.getByRole('button', { name: 'Add task' }).click();
 }
 
@@ -85,9 +88,9 @@ test('tabs from the add-task form into the first parent task editor', async ({ p
 
   await page.getByLabel('New task').focus();
   await page.getByLabel('New task').press('Tab');
-  await expect(page.getByLabel('Optional description')).toBeFocused();
+  await expect(page.getByRole('button', { name: 'Add note' })).toBeFocused();
 
-  await page.getByLabel('Optional description').press('Tab');
+  await page.getByRole('button', { name: 'Add note' }).press('Tab');
   await expect(page.getByRole('button', { name: 'Add task' })).toBeFocused();
 
   await page.getByRole('button', { name: 'Add task' }).press('Tab');
@@ -115,9 +118,9 @@ test('tabs in one unbroken chain from the composer through parents and subtasks'
 
   await page.getByLabel('New task').focus();
   await page.getByLabel('New task').press('Tab');
-  await expect(page.getByLabel('Optional description')).toBeFocused();
+  await expect(page.getByRole('button', { name: 'Add note' })).toBeFocused();
 
-  await page.getByLabel('Optional description').press('Tab');
+  await page.getByRole('button', { name: 'Add note' }).press('Tab');
   await expect(page.getByRole('button', { name: 'Add task' })).toBeFocused();
 
   await page.getByRole('button', { name: 'Add task' }).press('Tab');

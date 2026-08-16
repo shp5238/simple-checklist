@@ -16,14 +16,6 @@
       <h1>TO-DO LIST</h1>
       <p class="privacy">Text stays private to this browser.<br>Save a backup when it matters.</p>
     </header>
-    <form class="composer" id="task-form">
-      <label class="sr-only" for="task-title">New task</label>
-      <input id="task-title" name="title" maxlength="240" autocomplete="off" placeholder="What needs doing?" required>
-      <label class="sr-only" for="task-description">Optional description</label>
-      <textarea id="task-description" name="description" maxlength="4000"
-        placeholder="Add a note (optional)"></textarea>
-      <div class="composer-actions"><button tabindex="0" class="primary" type="submit">Add task</button></div>
-    </form>
     <section class="toolbar" aria-label="List controls">
       <div class="views" aria-label="Views"><button tabindex="0" class="view" type="button" data-view="all"
           aria-pressed="true">All</button><button tabindex="0" class="view" type="button" data-view="active"
@@ -39,6 +31,21 @@
           id="import-button" type="button">Import JSON</button></label><button tabindex="0" id="clear-button" class="danger"
         type="button">Clear all</button></div>
     <p id="status" class="status" role="status" aria-live="polite"></p>
+    <form class="composer" id="task-form" aria-label="Add a task">
+      <div class="composer-row">
+        <label class="sr-only" for="task-title">New task</label>
+        <input id="task-title" name="title" maxlength="240" autocomplete="off" placeholder="What needs doing?"
+          aria-keyshortcuts="Alt+N" required>
+        <button id="composer-description-toggle" class="composer-note-toggle" type="button" tabindex="0"
+          aria-expanded="false" aria-controls="composer-description">Add note</button>
+        <button tabindex="0" class="primary" type="submit">Add task</button>
+      </div>
+      <div id="composer-description" class="composer-description" hidden>
+        <label class="sr-only" for="task-description">Optional description</label>
+        <textarea id="task-description" name="description" maxlength="4000"
+          placeholder="Add a note (optional)"></textarea>
+      </div>
+    </form>
   </main>
 </body>
 
