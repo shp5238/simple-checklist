@@ -1,0 +1,29 @@
+name: Check checklist app
+
+on:
+  push:
+    paths:
+      - "simple-checklist/**"
+      - ".github/workflows/check.yml"
+  pull_request:
+    paths:
+      - "simple-checklist/**"
+      - ".github/workflows/check.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Confirm the app exists
+        run: test -f simple-checklist/index.html
+
+      - name: Guard against unsafe task rendering
+        run: |
+          ! grep -nE 'innerHTML|insertAdjacentHTML|document\\.write' simple-checklist/index.html

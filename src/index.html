@@ -1,31 +1,45 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="A private, local-first checklist.">
   <title>TO-DO LIST</title>
   <link rel="stylesheet" href="styles.css">
-  <link script src="script.js" defer></script>
-
+  <script src="script.js" defer></script>
 </head>
+
 <body>
   <main class="shell">
-    <header><h1>Plain List</h1><p class="privacy">Private to this browser.<br>Save a backup when it matters.</p></header>
+    <header>
+      <h1>TO-DO LIST</h1>
+      <p class="privacy">Text stays private to this browser.<br>Save a backup when it matters.</p>
+    </header>
     <form class="composer" id="task-form">
       <label class="sr-only" for="task-title">New task</label>
       <input id="task-title" name="title" maxlength="240" autocomplete="off" placeholder="What needs doing?" required>
       <label class="sr-only" for="task-description">Optional description</label>
-      <textarea id="task-description" name="description" maxlength="4000" placeholder="Add a note (optional)"></textarea>
-      <div class="composer-actions"><span class="hint">Text stays in this browser.</span><button class="primary" type="submit">Add task</button></div>
+      <textarea id="task-description" name="description" maxlength="4000"
+        placeholder="Add a note (optional)"></textarea>
+      <div class="composer-actions"><button tabindex="0" class="primary" type="submit">Add task</button></div>
     </form>
     <section class="toolbar" aria-label="List controls">
-      <div class="views" aria-label="Views"><button class="view" type="button" data-view="all" aria-pressed="true">All</button><button class="view" type="button" data-view="active" aria-pressed="false">Active</button><button class="view" type="button" data-view="completed" aria-pressed="false">Completed</button></div>
-      <div class="search"><label class="sr-only" for="search">Search tasks</label><input id="search" type="search" maxlength="240" autocomplete="off" placeholder="Search"><button id="clear-search" class="clear-search" type="button" aria-label="Clear search" hidden>×</button></div>
+      <div class="views" aria-label="Views"><button tabindex="0" class="view" type="button" data-view="all"
+          aria-pressed="true">All</button><button tabindex="0" class="view" type="button" data-view="active"
+          aria-pressed="false">Active</button><button tabindex="0" class="view" type="button" data-view="completed"
+          aria-pressed="false">Completed</button></div>
+      <div class="search"><label class="sr-only" for="search">Search tasks</label><input id="search" type="search"
+          maxlength="240" autocomplete="off" placeholder="Search"><button tabindex="0" id="clear-search" class="clear-search"
+          type="button" aria-label="Clear search" hidden>×</button></div>
     </section>
     <ul id="task-list" class="list" aria-label="Tasks"></ul>
-    <div class="footer"><button id="export-button" type="button">Export JSON</button><label><span class="sr-only">Import a JSON backup</span><input id="import-input" type="file" accept="application/json,.json" hidden><button id="import-button" type="button">Import JSON</button></label><button id="clear-button" class="danger" type="button">Clear all</button></div>
+    <div class="footer"><button tabindex="0" id="export-button" type="button">Export JSON</button><label><span class="sr-only">Import
+          a JSON backup</span><input id="import-input" type="file" accept="application/json,.json" hidden><button tabindex="0"
+          id="import-button" type="button">Import JSON</button></label><button tabindex="0" id="clear-button" class="danger"
+        type="button">Clear all</button></div>
     <p id="status" class="status" role="status" aria-live="polite"></p>
   </main>
 </body>
+
 </html>
